@@ -1,0 +1,218 @@
+/*
+Name: Tim Barber, Timothy_Barber@student.uml.edu
+Computer Science Department, UMass Lowell Comp.4610, GUI Programming I
+File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/CSS/style.css Created: 23-oct-2017
+*/
+
+.money {
+  font-size: 150%;
+}
+
+/* Used for the module title
+Makes the background transparent and centers the text
+Its a textbox but it looks like a label until you click it*/
+
+.moduleTitle {
+  background-color: transparent !important;
+  position: relative;
+  top: 50%;
+  left: 10%;
+  text-align: center;
+  margin-left: -50px;
+  margin-top: -25px;
+  width: 87%;
+  border: grey;
+  font-size: 100%;
+  font-weight: bold;
+  font-style: oblique;
+}
+
+/* Makes the closed button red and rounded
+Also sets its position*/
+
+.closeButton {
+  filter: drop-shadow(1px 1px 1px black);
+  float: right;
+  border-radius: 35px;
+  width: 50px;
+  height: 20px;
+  color: white;
+  background-color: red;
+  position: relative;
+  right: 5px;
+}
+
+/* Changes the color of the add module button to green*/
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 12%;
+}
+
+/*makes the children of the add module button green*/
+
+.dropbtnChild {
+  background-color: green;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 12%;
+}
+
+/* Dropdown button on hover & focus */
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+/* Dropdown button on hover & focus */
+
+.dropbtnChild:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+/* menu display*/
+
+.addDropdownMenu {
+  position: relative;
+  display: inline-block;
+}
+
+/*Centers the text*/
+
+.centerText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -25px;
+  font-size: 150%;
+}
+
+/*For the contense of the add module button */
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: grey;
+  min-width: 160px;
+  position: fixed;
+  bottom: 80px;
+  right: -5px;
+}
+
+/* for links in the content*/
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/*Hover color for links */
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+/* Show the dropdown menu */
+
+.show {
+  display: block;
+}
+
+/* Formats the module's width and height
+creates a border*/
+
+.module {
+  width: 800px;
+  overflow: hidden;
+  -webkit-column-break-inside: avoid;
+  /* Chrome, Safari */
+  page-break-inside: avoid;
+  /* Theoretically FF 20+ */
+  break-inside: avoid-column;
+  /* IE 11 */
+  display: table;
+  /* Actually FF 20+ */
+  border: 5px solid #c3c3c3;
+  float: left;
+  border-radius: 10px;
+  padding-top: 5px;
+  height: 290px;
+}
+
+/*for the info section, sets padding, total width out of entire module */
+
+.info {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 10px;
+  float: left;
+  width: 40%;
+}
+
+/*for the discounts section, sets padding, total width out of entire module */
+
+.discounts {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  float: left;
+  width: 20%;
+  height: 245px;
+  border-left: 5px solid black;
+}
+
+/*for the total section, sets padding, total width out of entire module */
+
+.total {
+  text-align: center;
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  float: right;
+  width: 30%;
+  height: 245px;
+  border-left: 5px solid black;
+}
+
+/*for the title section, sets padding, total width out of entire module */
+
+.title {
+  background: linear-gradient(grey, white);
+  border-radius: 8px;
+  border-bottom: 5px solid #c3c3c3;
+  column-span: all;
+  padding-bottom: 5px;
+}
+
+/*formats all textboxes */
+
+.textbox {
+  float: right;
+  max-width: 100px;
+  background-color: white;
+}
+
+.section {}
+
+/* Gives the background color*/
+
+body {
+  background-color: grey;
+  font-family: sans-serif;
+  font-size: 110%;
+}

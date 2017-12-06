@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+Name: Tim Barber, Timothy_Barber@student.uml.edu
+Computer Science Department, UMass Lowell Comp.4610, GUI Programming I
+File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-oct-2017
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="CSS/style.css" />
+  <title>Car Comparor</title>
+</head>
+
+<body>
+
+  <div id=Modules>
+    <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Oil Tool </p>
+    <div id=NothingHere class="centerText">
+      <p style="text-align: center;">Try adding a new car from the menu in the bottom right</p>
+    </div>
+  </div>
+
+  <div id=carDetails>
+  </div>
+
+  <div id=AddCar style="display: none;">
+    <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Add A Car </p>
+    <form name="tableForm" id="tableForm" method="post">
+      Year: <select id='carYear'></select>
+      <br> Make: <select id='carMake'></select>
+      <br> Model: <select id='carModel'></select>
+      <br> Milage: <input name="endMPG">
+      <br> Estimated Milage per year: <input name="MPGStep">
+      <br> <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <div class="addDropdownMenu ">
+    <button onclick="addCar() " class="dropbtn ">Add Car</button>
+    <div id="myDropdown" class="dropdown-content ">
+    </div>
+  </div>
+
+  <script src="script.js "></script>
+</body>
+
+</html>
