@@ -217,6 +217,7 @@ function expandCarModule(mod, button, textDiv, secondaryText) {
 
 function showAddCar() {
   //Make sure the placeholder is hidden when adding a module for the first time
+  document.getElementById('AddCar').className = 'FormFadeIn';
   document.getElementById('Modules').style.display = 'none';
   document.getElementById('AddCar').style.display = '';
 
@@ -254,8 +255,12 @@ function validateForm() {
 
 //Cancels the add page and goes back to the homepage
 function cancelAddCar() {
-  document.getElementById('Modules').style.display = '';
-  document.getElementById('AddCar').style.display = 'none';
+  document.getElementById('AddCar').className = 'FormFadeOut';
+  setTimeout(function() {
+    document.getElementById('Modules').style.display = '';
+    document.getElementById('AddCar').style.display = 'none';
+  }, 300);
+
 }
 
 //Create a radio button with a given name

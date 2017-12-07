@@ -26,15 +26,12 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
     </div>
   </div>
 
-  <div id=carDetails>
-  </div>
-
-  <div id=AddCar style="display: none;">
+  <div id=AddCar class="FormFadeIn" style="display: none;">
     <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Add A Car </p>
     <form name="tableForm" id="tableForm" method="post">
-      Year: <select id='carYear'><option selected="selected">2003</option></select>
-      <br> Make: <select id='carMake'><option selected="selected">Acura</option></select>
-      <br> Model: <select id='carModel'><option selected="selected">CL Type S</option></select>
+      Year: <select id='carYear'><option selected="selected">2003</option><option>2008</option></select>
+      <br> Make: <select id='carMake'><option selected="selected">Acura</option><option>Hundai</option></select>
+      <br> Model: <select id='carModel'><option selected="selected">CL Type S</option><option>Accent Blue</option></select>
       <br> Milage: <input name="milage">
       <br> Estimated Milage per year: <input name="estMilage">
       <br> <input type="submit" value="Submit">

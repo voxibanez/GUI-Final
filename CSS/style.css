@@ -146,6 +146,14 @@ Also sets its position*/
   right: -5px;
 }
 
+.modulesFadeIn {
+  animation: fadein 0.5s;
+}
+
+.modulesFadeOut {
+  animation: fadeout 0.3s;
+}
+
 .detailsPageFadeIn {
   text-align: center;
   animation: fadein 0.5s;
@@ -254,6 +262,18 @@ creates a border*/
   width: 30%;
   height: 245px;
   border-left: 5px solid black;
+}
+
+.FormFadeIn {
+  text-align: center;
+  font-size: 24px;
+  animation: fadein 1s;
+}
+
+.FormFadeOut {
+  text-align: center;
+  font-size: 24px;
+  animation: fadeout .4s;
 }
 
 /*for the title section, sets padding, total width out of entire module */
