@@ -8,7 +8,7 @@ var cars = [];
 var carIter = 0;
 
 //Adds a car object to the cars array
-function addCar(year, make, model, nickname, milage, estMilage, oilWeight, oilType) {
+function addCar(year, make, model, nickname, milage, estMilage, oilWeight, oilType, imageURL) {
 
   var temp = new carModule("car" + carIter)
   temp.carYear.innerHTML = year;
@@ -19,6 +19,10 @@ function addCar(year, make, model, nickname, milage, estMilage, oilWeight, oilTy
   temp.carEstMilage.innerHTML = estMilage;
   temp.oilWeight.innerHTML = oilWeight;
   temp.oilType.innerHTML = oilType;
+  if (imageURL != "") {
+    temp.imageURL = imageURL;
+  }
+
   //Push module into array
   cars.push(temp);
   //Write array to home screen
@@ -47,6 +51,8 @@ function carModule(UID) {
     document.getElementById('carDetails').style.display = 'none';
   }
 
+  this.imageURL = "http://www.udriveit.com.au/wp-content/uploads/2016/04/placeholder-350x205.gif";
+  //"https://i.forbesimg.com/images/2002/01/21/test_side_415x277.jpg"
   //Car Year
   this.carYear = document.createElement('Label');
   this.carYear.className = "text";
@@ -87,8 +93,26 @@ function addCarModule(mod) {
   mainDiv.className = "module";
 
   mainDiv.id = mod.UID;
-  var button = document.createElement("button");
+  var button = document.createElement("div");
+  var secondaryText = document.createElement("div");
+  secondaryText.id = "secondaryTextModule";
+  secondaryText.innerHTML = "<br />Est Milage: " + mod.carMilage.innerHTML + "<br />DUE FOR AN OIL CHANGE";
+  secondaryText.style.display = 'none';
   button.innerHTML = mod.title.innerHTML;
+  button.style.backgroundImage = "url(" + mod.imageURL + ")";
+  button.appendChild(secondaryText);
+  button.onmouseover = function() {
+    secondaryText.className = "secondaryTextModuleFadeIn";
+    secondaryText.style.display = '';
+  }
+  button.onmouseleave = function() {
+    setTimeout(function() {
+      secondaryText.style.display = 'none';
+    }, 300);
+    secondaryText.className = "secondaryTextModuleFadeOut";
+
+
+  }
   button.className = "carbtn";
   button.onclick = function() {
     expandCarModule(mod)
@@ -194,7 +218,7 @@ function validateForm() {
   }
 
   //Create new module
-  addCar(year, make, model, year + " " + make + " " + model, milage, estMilage, "5W-20", "Synthetic");
+  addCar(year, make, model, year + " " + make + " " + model, milage, estMilage, "5W-20", "Synthetic", "");
 
   cancelAddCar();
   //This is so the page doesn't refresh on submit

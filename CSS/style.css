@@ -58,19 +58,30 @@ Also sets its position*/
 }
 
 .carbtn {
-  background-color: #4CAF50;
+  background-color: #999999;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: overlay;
   color: white;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 16px;
-  font-size: 16px;
+  font-size: 36px;
   border: none;
   cursor: pointer;
   border-radius: 12%;
+  height: 200px;
+  width: 400px;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  transition: all 0.3s ease 0s;
+  text-align: center;
 }
 
 /* Dropdown button on hover & focus */
 
 .carbtn:hover, .dropbtn:focus {
-  background-color: #3e8e41;
+  background-color: #cccccc;
+  width: 500px;
+  height: 300px;
 }
 
 /* Dropdown button on hover & focus */
@@ -115,6 +126,34 @@ Also sets its position*/
   right: -5px;
 }
 
+.secondaryTextModuleFadeIn {
+  text-align: center;
+  animation: fadein 1s;
+}
+
+.secondaryTextModuleFadeOut {
+  text-align: center;
+  animation: fadeout .4s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 /* for links in the content*/
 
 .dropdown-content a {
@@ -140,15 +179,9 @@ Also sets its position*/
 creates a border*/
 
 .module {
-  display: inline;
-  width: 300px;
-  height: 100px;
-  display: inline-block;
   overflow: hidden;
-  border: 5px solid #c3c3c3;
   float: left;
-  border-radius: 10px;
-  padding-top: 5px;
+  padding: 30px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -212,7 +245,7 @@ creates a border*/
 /* Gives the background color*/
 
 body {
-  background-color: grey;
+  background-color: white;
   font-family: sans-serif;
   font-size: 110%;
 }
