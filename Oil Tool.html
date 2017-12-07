@@ -10,6 +10,11 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" href="CSS/style.css" />
   <title>Car Comparor</title>
+  <script src="./lib/jquery.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="./dist/jquery.validate.js"></script>
 </head>
 
 <body>
@@ -27,17 +32,48 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <div id=AddCar style="display: none;">
     <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Add A Car </p>
     <form name="tableForm" id="tableForm" method="post">
-      Year: <select id='carYear'></select>
-      <br> Make: <select id='carMake'></select>
-      <br> Model: <select id='carModel'></select>
-      <br> Milage: <input name="endMPG">
-      <br> Estimated Milage per year: <input name="MPGStep">
+      Year: <select id='carYear'><option selected="selected">2003</option></select>
+      <br> Make: <select id='carMake'><option selected="selected">Acura</option></select>
+      <br> Model: <select id='carModel'><option selected="selected">CL Type S</option></select>
+      <br> Milage: <input name="milage">
+      <br> Estimated Milage per year: <input name="estMilage">
       <br> <input type="submit" value="Submit">
     </form>
+    <script>
+      $("#tableForm").validate({
+        rules: {
+          // compound rule for each label
+          carYear: {
+            required: true,
+            number: true
+          },
+          carMake: {
+            required: true,
+            number: true
+          },
+          carModel: {
+            required: true,
+            number: true
+          },
+          milage: {
+            number: true
+          },
+          estMilage: {
+            number: true
+          },
+        },
+        //Call this function when the form is submitted and validated through jquery
+        submitHandler: function(form) {
+          validateForm();
+        }
+
+      });
+    </script>
+    <button type="button" onClick="cancelAddCar()">Cancel</button>
   </div>
 
   <div class="addDropdownMenu ">
-    <button onclick="addCar() " class="dropbtn ">Add Car</button>
+    <button onclick="showAddCar() " class="dropbtn ">Add Car</button>
     <div id="myDropdown" class="dropdown-content ">
     </div>
   </div>

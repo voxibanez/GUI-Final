@@ -57,16 +57,20 @@ Also sets its position*/
   border-radius: 12%;
 }
 
-/*makes the children of the add module button green*/
-
-.dropbtnChild {
-  background-color: green;
+.carbtn {
+  background-color: #4CAF50;
   color: white;
   padding: 16px;
   font-size: 16px;
   border: none;
   cursor: pointer;
   border-radius: 12%;
+}
+
+/* Dropdown button on hover & focus */
+
+.carbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
 }
 
 /* Dropdown button on hover & focus */
@@ -136,21 +140,17 @@ Also sets its position*/
 creates a border*/
 
 .module {
-  width: 800px;
+  display: inline;
+  width: 300px;
+  height: 100px;
+  display: inline-block;
   overflow: hidden;
-  -webkit-column-break-inside: avoid;
-  /* Chrome, Safari */
-  page-break-inside: avoid;
-  /* Theoretically FF 20+ */
-  break-inside: avoid-column;
-  /* IE 11 */
-  display: table;
-  /* Actually FF 20+ */
   border: 5px solid #c3c3c3;
   float: left;
   border-radius: 10px;
   padding-top: 5px;
-  height: 290px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /*for the info section, sets padding, total width out of entire module */
