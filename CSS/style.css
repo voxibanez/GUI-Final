@@ -58,6 +58,7 @@ Also sets its position*/
 }
 
 .carbtn {
+  overflow: hidden;
   background-color: #999999;
   background-repeat: no-repeat;
   background-size: cover;
@@ -73,6 +74,25 @@ Also sets its position*/
   width: 400px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   transition: all 0.3s ease 0s;
+  text-align: center;
+}
+
+.carbtnEXPAND {
+  overflow: hidden;
+  background-color: #e6e6e6;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: overlay;
+  color: white;
+  padding: 16px;
+  font-size: 36px;
+  border: none;
+  cursor: pointer;
+  border-radius: 0%;
+  height: 1000px;
+  width: 1000px;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  transition: all 0.5s ease 0s;
   text-align: center;
 }
 
@@ -124,6 +144,20 @@ Also sets its position*/
   position: fixed;
   bottom: 80px;
   right: -5px;
+}
+
+.detailsPageFadeIn {
+  text-align: center;
+  animation: fadein 0.5s;
+}
+
+.detailsPageFadeOut {
+  text-align: center;
+  animation: fadeout 0.3s;
+}
+
+.moduleTextFadeOut {
+  animation: fadeout .4s;
 }
 
 .secondaryTextModuleFadeIn {
@@ -225,11 +259,10 @@ creates a border*/
 /*for the title section, sets padding, total width out of entire module */
 
 .title {
-  background: linear-gradient(grey, white);
-  border-radius: 8px;
-  border-bottom: 5px solid #c3c3c3;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   column-span: all;
   padding-bottom: 5px;
+  font-size: 36px;
 }
 
 /*formats all textboxes */

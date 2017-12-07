@@ -40,19 +40,9 @@ function carModule(UID) {
   this.title = document.createElement('Label');
   this.title.className = "moduleTitle";
 
-  //Close button for module
-  this.closeButton = document.createElement("button");
-  this.closeButton.innerHTML = "X";
-  this.closeButton.className = "closeButton";
-  //Put the placeholder back if there are no modules
-  this.closeButton.onclick = function() {
-    document.getElementById('Modules').style.display = '';
-    document.getElementById('AddCar').style.display = 'none';
-    document.getElementById('carDetails').style.display = 'none';
-  }
 
-  this.imageURL = "http://www.udriveit.com.au/wp-content/uploads/2016/04/placeholder-350x205.gif";
-  //"https://i.forbesimg.com/images/2002/01/21/test_side_415x277.jpg"
+  //this.imageURL = "http://www.udriveit.com.au/wp-content/uploads/2016/04/placeholder-350x205.gif";
+  this.imageURL = "https://i.forbesimg.com/images/2002/01/21/test_side_415x277.jpg"
   //Car Year
   this.carYear = document.createElement('Label');
   this.carYear.className = "text";
@@ -93,14 +83,18 @@ function addCarModule(mod) {
   mainDiv.className = "module";
 
   mainDiv.id = mod.UID;
+
+  //Set up the clickable DIV
   var button = document.createElement("div");
+  var textDiv = document.createElement("div");
   var secondaryText = document.createElement("div");
-  secondaryText.id = "secondaryTextModule";
-  secondaryText.innerHTML = "<br />Est Milage: " + mod.carMilage.innerHTML + "<br />DUE FOR AN OIL CHANGE";
+  secondaryText.innerHTML = "<br />Est Milage: " + mod.carMilage.innerHTML;
   secondaryText.style.display = 'none';
-  button.innerHTML = mod.title.innerHTML;
+  textDiv.innerHTML = mod.title.innerHTML;
   button.style.backgroundImage = "url(" + mod.imageURL + ")";
-  button.appendChild(secondaryText);
+  textDiv.appendChild(secondaryText);
+  button.appendChild(textDiv);
+  button.className = "carbtn";
   button.onmouseover = function() {
     secondaryText.className = "secondaryTextModuleFadeIn";
     secondaryText.style.display = '';
@@ -110,12 +104,14 @@ function addCarModule(mod) {
       secondaryText.style.display = 'none';
     }, 300);
     secondaryText.className = "secondaryTextModuleFadeOut";
-
-
   }
-  button.className = "carbtn";
   button.onclick = function() {
-    expandCarModule(mod)
+    textDiv.className = "moduleTextFadeOut";
+    button.className = "carbtnEXPAND";
+    setTimeout(function() {
+      textDiv.style.display = 'none';
+      expandCarModule(mod, button, textDiv, secondaryText)
+    }, 300);
   }
   mainDiv.appendChild(button);
 
@@ -123,11 +119,12 @@ function addCarModule(mod) {
   document.getElementById("Modules").appendChild(mainDiv);
 }
 
-function expandCarModule(mod) {
+function expandCarModule(mod, button, textDiv, secondaryText) {
   //Create the module div
   var mainDiv = document.createElement("div");
 
-  mainDiv.id = mod.UID;
+  mainDiv.id = mod.UID + "details";
+  mainDiv.className = "detailsPageFadeIn"
 
   //Create divs for the 3 sections of the module
   var titleDiv = document.createElement("div");
@@ -135,12 +132,41 @@ function expandCarModule(mod) {
 
   var div = document.createElement("div");
   div.className = "info";
+  //Close button for module
+  closeButton = document.createElement("button");
+  closeButton.innerHTML = "X";
+  closeButton.className = "closeButton";
+  var mouseLeaveBack = button.onmouseleave;
+  var mouseOverBack = button.onmouseover;
+  var mouseClickBack = button.onclick;
+  button.onmouseover = function() {}
+  button.onmouseleave = function() {}
+  button.onclick = function() {}
+
+  //Close Button OnClick method
+  closeButton.onclick = function() {
+    mainDiv.className = "detailsPageFadeOut"
+    button.className = "carbtn";
 
 
+    button.onmouseover = mouseOverBack;
+    button.onmouseleave = mouseLeaveBack;
+
+    setTimeout(function() {
+      button.onclick = mouseClickBack;
+      textDiv.style.display = '';
+      secondaryText.style.display = 'none';
+      secondaryText.className = "secondaryTextModuleFadeIn";
+      textDiv.className = "moduleTextFadeIn";
+      mainDiv.outerHTML = "";
+      delete mainDiv;
+    }, 200);
+
+  }
 
   //Title
   titleDiv.appendChild(mod.title);
-  titleDiv.appendChild(mod.closeButton);
+  titleDiv.appendChild(closeButton);
 
   //Milage
   var tempDiv = document.createElement("div");
@@ -178,14 +204,15 @@ function expandCarModule(mod) {
   //Append all child divs to mainDiv
   mainDiv.appendChild(titleDiv);
   mainDiv.appendChild(div);
+  button.appendChild(mainDiv);
 
   //Hide modules when displaying details
-  document.getElementById('Modules').style.display = 'none';
-  document.getElementById('carDetails').style.display = '';
+  //document.getElementById('Modules').style.display = 'none';
+  //document.getElementById('carDetails').style.display = '';
 
   //Append mainDiv to Modules div
-  document.getElementById("carDetails").innerHTML = "";
-  document.getElementById("carDetails").appendChild(mainDiv);
+  //document.getElementById("carDetails").innerHTML = "";
+  //document.getElementById("carDetails").appendChild(mainDiv);
 }
 
 function showAddCar() {
