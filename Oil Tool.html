@@ -15,6 +15,22 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="./dist/jquery.validate.js"></script>
+  <script type="text/javascript" src="http://www.carqueryapi.com/js/carquery.0.3.4.js"></script>
+  <script src="require.js"></script>
+  <script src="vehicleDatabase.js "></script>
+  <script src="script.js "></script>
+  <script src="imageSearch.js"></script>
+  <script>
+    requirejs.config({
+      //By default load any module IDs from js/lib
+      baseUrl: './node_modules',
+      //except, if the module ID starts with "app",
+      //load it from the js/app directory. paths
+      //config is relative to the baseUrl, and
+      //never includes a ".js" extension since
+      //the paths config could be for a directory.
+    });
+  </script>
 </head>
 
 <body>
@@ -29,9 +45,10 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <div id=AddCar class="FormFadeIn" style="display: none;">
     <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Add A Car </p>
     <form name="tableForm" id="tableForm" method="post">
-      Year: <select id='carYear'><option selected="selected">2003</option><option>2008</option></select>
-      <br> Make: <select id='carMake'><option selected="selected">Acura</option><option>Hundai</option></select>
-      <br> Model: <select id='carModel'><option selected="selected">CL Type S</option><option>Accent Blue</option></select>
+      <br>Year: <select name="carYear" id="carYear"></select>
+      <br>Make: <select name="carMake" id="carMake"></select>
+      <br>Model: <select name="carModel" id="carModel"></select>
+      <br>Trim: <select name="carModelTrim" id="carModelTrim"></select>
       <br> Milage: <input name="milage">
       <br> Estimated Milage per year: <input name="estMilage">
       <br> <input type="submit" value="Submit">
@@ -41,16 +58,13 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
         rules: {
           // compound rule for each label
           carYear: {
-            required: true,
-            number: true
+            required: true
           },
           carMake: {
-            required: true,
-            number: true
+            required: true
           },
           carModel: {
-            required: true,
-            number: true
+            required: true
           },
           milage: {
             number: true
@@ -63,7 +77,6 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
         submitHandler: function(form) {
           validateForm();
         }
-
       });
     </script>
     <button type="button" onClick="cancelAddCar()">Cancel</button>
@@ -74,8 +87,6 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
     <div id="myDropdown" class="dropdown-content ">
     </div>
   </div>
-
-  <script src="script.js "></script>
 </body>
 
 </html>

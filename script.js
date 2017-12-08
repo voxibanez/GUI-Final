@@ -227,9 +227,10 @@ function showAddCar() {
 
 //Called by the submit button, checks if every paremeter is correct to build a valid table
 function validateForm() {
-  var year = parseFloat(document.forms["tableForm"]["carYear"].value);
+  var year = document.forms["tableForm"]["carYear"].value;
   var make = document.forms["tableForm"]["carMake"].value;
   var model = document.forms["tableForm"]["carModel"].value;
+  var trim = document.forms["tableForm"]["carModelTrim"].value;
 
   var milage = parseFloat(document.forms["tableForm"]["milage"].value);
   var estMilage = parseFloat(document.forms["tableForm"]["estMilage"].value);
@@ -244,6 +245,8 @@ function validateForm() {
     alert("Milage Price cannot be less than 0");
     return false;
   }
+
+  var imageURL = searchImage(year + " " + make + " " + model + " " + trim);
 
   //Create new module
   addCar(year, make, model, year + " " + make + " " + model, milage, estMilage, "5W-20", "Synthetic", "");
