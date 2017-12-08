@@ -1,11 +1,26 @@
-function foo() {
-  //const GoogleImages = require('./node_modules/google-images');
-  require(["./"], function(foo) {
-    const GoogleImages = foo;
-    const client = new Client('013523532837040222294:c6ymvz91bo8', 'AIzaSyAeGqIJAEO5fK7HAqqvO2HiSXnLDAnjgDs');
-    //return client.search(criteria, {
-    //  size: 'large'
-    //})[0].url;
-  });
+function searchImage(imageName, callback) {
+  var def = $.Deferred();
+  // Set the flicker api url here
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
 
+  // Set the tag display options
+  var options = {
+    tags: imageName,
+    sort: "relevance",
+    format: "json"
+  };
+
+  // Get json format data using $.getJSON()
+  $.getJSON(flickerAPI, options)
+    .done(callback)
+    .fail(OnApiCallError);
+
+
+
+  // Api call error callback function
+  function OnApiCallError(jqxhr, textStatus, error) {
+    var err = textStatus + ", " + error;
+    console.log("Request Failed: " + err);
+  }
+  return def;
 }

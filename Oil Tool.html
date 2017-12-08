@@ -16,30 +16,20 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="./dist/jquery.validate.js"></script>
   <script type="text/javascript" src="http://www.carqueryapi.com/js/carquery.0.3.4.js"></script>
-  <script src="require.js"></script>
   <script src="vehicleDatabase.js "></script>
   <script src="script.js "></script>
   <script src="imageSearch.js"></script>
-  <script>
-    requirejs.config({
-      //By default load any module IDs from js/lib
-      baseUrl: './node_modules',
-      //except, if the module ID starts with "app",
-      //load it from the js/app directory. paths
-      //config is relative to the baseUrl, and
-      //never includes a ".js" extension since
-      //the paths config could be for a directory.
-    });
-  </script>
 </head>
 
 <body>
-
-  <div id=Modules>
+  <div id="Title">
     <p style="text-align: center;font-size:150%;background: linear-gradient(white, grey); border-radius: 50px;"> Oil Tool </p>
-    <div id=NothingHere class="centerText">
-      <p style="text-align: center;">Try adding a new car from the menu in the bottom right</p>
-    </div>
+  </div>
+  <div id=NothingHere class="centerText">
+    <p style="text-align: center;">Try adding a new car from the menu in the bottom right</p>
+  </div>
+  <div id=Modules>
+
   </div>
 
   <div id=AddCar class="FormFadeIn" style="display: none;">

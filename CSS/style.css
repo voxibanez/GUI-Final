@@ -89,8 +89,6 @@ Also sets its position*/
   border: none;
   cursor: pointer;
   border-radius: 0%;
-  height: 1000px;
-  width: 1000px;
   text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
   transition: all 0.5s ease 0s;
   text-align: center;
@@ -152,6 +150,22 @@ Also sets its position*/
 
 .modulesFadeOut {
   animation: fadeout 0.3s;
+}
+
+.moduleFadeOut {
+  overflow: hidden;
+  animation: fadeout 0.3s;
+  transition: all 0.3s ease 0s;
+}
+
+.moduleFadeIn {
+  overflow: hidden;
+  float: left;
+  padding: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadein 0.5s;
+  transition: all 0.3s ease 0s;
 }
 
 .detailsPageFadeIn {
@@ -283,6 +297,11 @@ creates a border*/
   column-span: all;
   padding-bottom: 5px;
   font-size: 36px;
+  color: white;
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  text-align: center;
+  background: transparent;
+  border: none;
 }
 
 /*formats all textboxes */
