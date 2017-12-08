@@ -43,8 +43,8 @@ function addCar(year, make, model, trim, nickname, milage, estMilage, oilWeight,
   }
   temp.oilWeight.innerHTML = oilWeight;
   temp.oilType.innerHTML = oilType;
-  bake_cookie("test", temp);
-  read_cookie();
+  //bake_cookie("test", temp);
+  //read_cookie();
   addCarModule(temp);
   //Push module into array
   cars.push(temp);
