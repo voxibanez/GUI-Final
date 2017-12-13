@@ -14,6 +14,12 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
   <script type="text/javascript" src="http://www.carqueryapi.com/js/carquery.0.3.4.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="CSS/jquery-ui.theme.min.css" />
+  <link rel="stylesheet" href="CSS/jquery-ui.structure.min.css" />
+
+
   <script src="vehicleDatabase.js "></script>
   <script src="script.js "></script>
   <script src="imageSearch.js"></script>
@@ -39,8 +45,14 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
       <br>Trim: <select name="carModelTrim" id="carModelTrim"></select>
       <br> Milage: <input name="milage">
       <br> Estimated Milage per year: <input name="estMilage">
+      <br>Date of Last Oil Change: <input type="text" name="lastOilChange" id="datepicker">
       <br> <input type="submit" value="Submit">
     </form>
+    <script>
+      $(function() {
+        $("#datepicker").datepicker();
+      });
+    </script>
     <script>
       $("#tableForm").validate({
         rules: {
@@ -71,10 +83,12 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/index.html Created: 23-
   </div>
 
   <div class="addDropdownMenu ">
-    <button onclick="showAddCar() " class="dropbtn ">Add Car</button>
-    <div id="myDropdown" class="dropdown-content ">
-    </div>
+    <button id="addCarBtn" onclick="showAddCar() " class="dropbtn ">Add Car</button>
   </div>
+
+  <script>
+    read_cookie();
+  </script>
 </body>
 
 </html>

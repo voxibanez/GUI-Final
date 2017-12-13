@@ -7,49 +7,69 @@ File: /usr/cs/undergrad/2018/tbarber/public_html/Midterm/script.js Created: 23-o
 var cars = [];
 var carIter = 0;
 
-function bake_cookie(name, value) {
-  var newCookie = JSON.stringify(value);
-  document.cookie = document.cookie + newCookie;
+function bake_cookie() {
+  //var newCookie = ["carCookie", '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+  //document.cookie = document.cookie + newCookie;
+  //document.cookie = newCookie;
+  if (cars == undefined || cars.length < 1) {
+    $.cookie("carCookie", "");
+    return;
+  }
+  var src = JSON.stringify(cars);
+  $.cookie("carCookie", src);
+
+
 }
 
 function read_cookie() {
-  var result = document.cookie;
-  result && (result = JSON.parse(result[1]));
-  return result;
+  var cookie = $.cookie("carCookie");
+  var carCookie = eval(cookie);
+  if (carCookie == undefined) {
+    return;
+  }
+  for (i = 0; i < carCookie.length; i++) {
+    carCookie[i].expanded = false;
+    carCookie[i].editing = false;
+    updateLastOilChange(carCookie[i]);
+    carCookie[i].UID = "car" + i;
+    addCarModule(carCookie[i]);
+    cars.push(carCookie[i]);
+    carIter = carIter + 1;
+  }
 }
 
 //Adds a car object to the cars array
-function addCar(year, make, model, trim, nickname, milage, estMilage, oilWeight, oilType) {
+function addCar(year, make, model, trim, nickname, milage, estMilage, oilWeight, oilType, lastOilChange) {
 
   var temp = new carModule("car" + carIter)
-  temp.carYear.innerHTML = year;
-  temp.carMake.innerHTML = make;
-  temp.carModel.innerHTML = model;
-  temp.carTrim.innerHTML = trim;
+  temp.carYear = year;
+  temp.carMake = capitalizeFirstLetter(make);
+  temp.carModel = model;
+  temp.carTrim = trim;
   if (!isNaN(nickname)) {
-    temp.title.innerHTML = nickname;
+    temp.title = nickname;
   } else {
-    temp.title.innerHTML = year + " " + make + " " + model;
+    temp.title = year + " " + make + " " + model;
   }
   if (!isNaN(milage)) {
-    temp.carMilage.innerHTML = milage;
+    temp.carMilage = milage;
   } else {
-    temp.carMilage.innerHTML = 0;
+    temp.carMilage = 0;
   }
   if (!isNaN(milage)) {
-    temp.carEstMilage.innerHTML = estMilage;
+    temp.carEstMilage = estMilage;
   } else {
-    temp.carEstMilage.innerHTML = 10000;
+    temp.carEstMilage = 10000;
   }
-  temp.oilWeight.innerHTML = oilWeight;
-  temp.oilType.innerHTML = oilType;
-  //bake_cookie("test", temp);
-  //read_cookie();
+  temp.oilWeight = oilWeight;
+  temp.oilType = oilType;
+  temp.lastOilChange = lastOilChange;
+  updateLastOilChange(temp);
   addCarModule(temp);
   //Push module into array
   cars.push(temp);
   //Write array to home screen
-
+  bake_cookie();
   carIter = carIter + 1;
 }
 
@@ -61,46 +81,68 @@ function carModule(UID) {
   this.UID = UID;
 
   //Title for module
-  this.title = document.createElement('Label');
-  this.title.className = "title";
+  this.title = "";
   //this.title.className = "moduleTitle";
 
 
   //this.imageURL = "http://www.udriveit.com.au/wp-content/uploads/2016/04/placeholder-350x205.gif";
   //this.imageURL = "https://i.forbesimg.com/images/2002/01/21/test_side_415x277.jpg"
   //Car Year
-  this.carYear = document.createElement('Label');
-  this.carYear.className = "text";
+  this.carYear = "";
 
   //Car Make
-  this.carMake = document.createElement('Label');
-  this.carMake.className = "text";
+  this.carMake = "";
 
   //Car Model
-  this.carModel = document.createElement('Label');
-  this.carModel.className = "text";
+  this.carModel = "";
 
   //Car Trim
-  this.carTrim = document.createElement('Label');
-  this.carTrim.className = "text";
+  this.carTrim = "";
 
   //Car Milage
-  this.carMilage = document.createElement('Label');
-  this.carMilage.className = "text";
+  this.carMilage = "";
 
   //Car estimated Milage
-  this.carEstMilage = document.createElement('Label');
-  this.carEstMilage.className = "text";
+  this.carEstMilage = "";
 
   //Car Oil Weight
-  this.oilWeight = document.createElement('Label');
-  this.oilWeight.className = "text";
+  this.oilWeight = "";
 
   //Car Oil Type
-  this.oilType = document.createElement('Label');
-  this.oilType.className = "text";
+  this.oilType = "";
+
+  this.lastOilChange = "";
+
+  this.needsOilChange = false;
+
+  this.expanded = false;
+
+  this.editing = false;
 
 
+}
+
+function updateLastOilChange(mod) {
+  mod.needsOilChange = false;
+  if (!isNaN(Date.parse(mod.lastOilChange))) {
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    var last = new Date(mod.lastOilChange);
+    var d1Y = now.getFullYear();
+    var d2Y = last.getFullYear();
+    var d1M = now.getMonth();
+    var d2M = last.getMonth();
+
+    var res = Math.abs((d2M + 12 * d2Y) - (d1M + 12 * d1Y));
+    if (res >= 6) {
+      mod.needsOilChange = true;
+    }
+
+  }
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function addCarModule(mod) {
@@ -111,6 +153,7 @@ function addCarModule(mod) {
   //Create the module div
 
   var mainDiv = document.createElement("div");
+
   mainDiv.className = "module";
 
   mainDiv.id = mod.UID;
@@ -121,11 +164,14 @@ function addCarModule(mod) {
   var textDiv = document.createElement("div");
   var secondaryText = document.createElement("label");
   var secondTextDiv = document.createElement("div");
-  secondaryText.innerHTML = "Est Milage: " + mod.carMilage.innerHTML;
+  secondaryText.innerHTML = "Est Milage: " + mod.carMilage;
+  if (mod.needsOilChange) {
+    secondaryText.innerHTML = secondaryText.innerHTML + "<br>Need Oil Change";
+  }
   secondTextDiv.appendChild(secondaryText);
   secondTextDiv.style.display = 'none';
-  textDiv.innerHTML = mod.title.innerHTML;
-  searchImage(mod.carYear.innerHTML + "," + mod.carMake.innerHTML.replace(/[ ,]+/g, ",") + "," + mod.carModel.innerHTML.replace(/[ ,]+/g, ","), function(data) {
+  textDiv.innerHTML = mod.title;
+  searchImage(mod.carYear + "," + mod.carMake.replace(/[ ,]+/g, ",") + "," + mod.carModel.replace(/[ ,]+/g, ","), function(data) {
     $.each(data.items, function(i, item) {
       button.style.backgroundImage = "url(" + item.media.m + ")";
       return;
@@ -136,6 +182,11 @@ function addCarModule(mod) {
   button.appendChild(textDiv);
   button.className = "carbtn";
   button.id = "btn";
+  if (mod.needsOilChange) {
+    button.style.border = "thick solid red";
+  } else {
+    button.style.border = "";
+  }
   button.onmouseover = function() {
     secondTextDiv.className = "secondaryTextModuleFadeIn";
     secondTextDiv.style.display = '';
@@ -147,6 +198,13 @@ function addCarModule(mod) {
     secondTextDiv.className = "secondaryTextModuleFadeOut";
   }
   button.onclick = function() {
+    //If already expanded dont do it again
+    if (mod.expanded) {
+      return;
+    }
+    document.getElementById("addCarBtn").className = "dropbtnFadeOut";
+    document.getElementById('addCarBtn').style.visibility = 'hidden';
+    mod.expanded = true;
     textDiv.className = "moduleTextFadeOut";
     button.className = "carbtnEXPAND";
     var width = window.innerWidth - 100 + "px";
@@ -184,7 +242,13 @@ function addCarModule(mod) {
 
 function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
 
-
+  //Disable the clicking and hovering functionality for now
+  var mouseLeaveBack = button.onmouseleave;
+  var mouseOverBack = button.onmouseover;
+  var mouseClickBack = button.onclick;
+  button.onmouseover = function() {}
+  button.onmouseleave = function() {}
+  button.onclick = function() {}
   //Create the module div
   var mainDiv = document.createElement("div");
 
@@ -194,26 +258,31 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
   var readDiv = document.createElement("div");
   var writeDiv = document.createElement("div");
   writeDiv.style.display = "none";
-  //Close button for module
-  closeButton = document.createElement("button");
-  closeButton.innerHTML = "X";
-  closeButton.className = "closeButton";
-  var mouseLeaveBack = button.onmouseleave;
-  var mouseOverBack = button.onmouseover;
-  var mouseClickBack = button.onclick;
-  button.onmouseover = function() {}
-  button.onmouseleave = function() {}
-  button.onclick = function() {}
-
-  //Close Button OnClick method
-  closeButton.onclick = function() {
+  deleteButton = document.createElement("IMG");
+  deleteButton.src = "Images/delete.svg";
+  deleteButton.className = "deleteButton";
+  deleteButton.onclick = function() {
+    document.getElementById("addCarBtn").className = "dropbtnFadeIn";
+    document.getElementById('addCarBtn').style.visibility = 'visible';
     mainDiv.className = "detailsPageFadeOut"
     button.className = "carbtn";
-
-    button.onmouseover = mouseOverBack;
-    button.onmouseleave = mouseLeaveBack;
-    button.style.width = "";
-    button.style.height = "";
+    button.style.width = "0px";
+    button.style.height = "0px";
+    setTimeout(function() {
+      var searchEles = document.getElementById("Modules").children;
+      for (var i = 0; i < searchEles.length; i++) {
+        if (searchEles[i].id == mod.UID) {
+          searchEles[i].outerHTML = ""
+        }
+      }
+      const index = cars.indexOf(mod);
+      cars.splice(index, 1);
+      if (cars.length < 1) {
+        document.getElementById('NothingHere').style.visibility = 'visible';
+        document.getElementById('NothingHere').style.display = '';
+      }
+      bake_cookie();
+    }, 300);
     var searchEles = document.getElementById("Modules").children;
     for (var i = 0; i < searchEles.length; i++) {
       if (searchEles[i].id != mod.UID) {
@@ -242,31 +311,171 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
       textDiv.className = "moduleTextFadeIn";
       mainDiv.outerHTML = "";
       delete mainDiv;
+      mod.expanded = false;
     }, 200);
+
+  }
+  //Close button for module
+  closeButton = document.createElement("IMG");
+  closeButton.src = "Images/back_button.jpg";
+  closeButton.className = "closeButton";
+
+  //Close Button OnClick method
+  closeButton.onclick = function() {
+    if (mod.editing) {
+      mod.title = titleEdit.value;
+      mod.carMilage = carMilageEdit.value;
+      mod.carEstMilage = carEstMilageEdit.value;
+      mod.oilWeight = oilWeightEdit.options[oilWeightEdit.selectedIndex].text;
+      mod.oilType = oilTypeEdit.options[oilTypeEdit.selectedIndex].text;
+      mod.lastOilChange = lastOilChangeEdit.value;
+      secondaryText.innerHTML = "Est Milage: " + mod.carMilage;
+      if (mod.needsOilChange) {
+        secondaryText.innerHTML = secondaryText.innerHTML + "<br>Need Oil Change";
+      }
+      if (mod.title == "") {
+        mod.title = mod.carYear + " " + mod.carMake + " " + mod.carModel;
+      }
+      textDiv.innerHTML = mod.title;
+      textDiv.appendChild(secondTextDiv);
+
+      //Update read-only fields
+      titleLabel.innerHTML = mod.title;
+      carMilageLabel.innerHTML = mod.carMilage;
+      carEstMilageLabel.innerHTML = mod.carEstMilage;
+      oilTypeLabel.innerHTML = mod.oilType;
+      oilWeightLabel.innerHTML = mod.oilWeight;
+      updateLastOilChange(mod);
+      bake_cookie();
+
+      //Hide edit, show read only
+      readDiv.style.display = "";
+      writeDiv.style.display = "none";
+    }
+    mod.editing = false;
+    mainDiv.className = "detailsPageFadeOut"
+    button.className = "carbtn";
+    button.onclick = "";
+    button.onmouseover = mouseOverBack;
+    button.onmouseleave = mouseLeaveBack;
+    button.style.width = "";
+    button.style.height = "";
+    document.getElementById("addCarBtn").className = "dropbtnFadeIn";
+    document.getElementById('addCarBtn').style.visibility = 'visible';
+    var searchEles = document.getElementById("Modules").children;
+    for (var i = 0; i < searchEles.length; i++) {
+      if (searchEles[i].id != mod.UID) {
+        searchEles[i].style.display = '';
+        searchEles[i].className = 'moduleFadeIn';
+      }
+    }
+
+    setTimeout(function() {
+      var searchEles = document.getElementById("Modules").children;
+      for (var i = 0; i < searchEles.length; i++) {
+        if (searchEles[i].id != mod.UID) {
+          var searchEles1 = searchEles[i].childNodes;
+          for (var j = 0; j < searchEles1.length; j++) {
+            searchEles1[j].style.width = "";
+            searchEles1[j].style.height = "";
+          }
+        }
+      }
+    }, 50);
+    setTimeout(function() {
+      textDiv.style.display = '';
+      secondTextDiv.style.display = 'none';
+      secondTextDiv.className = "secondaryTextModuleFadeIn";
+      textDiv.className = "moduleTextFadeIn";
+      mainDiv.outerHTML = "";
+      delete mainDiv;
+      button.onclick = mouseClickBack;
+      mod.expanded = false;
+    }, 100);
 
   }
 
   //
   //read section
   //
-  editButton = document.createElement("button");
-  editButton.innerHTML = "Edit";
+  editButton = document.createElement("IMG");
+  editButton.src = "Images/edit.png";
+  editButton.className = "deleteButton";
   editButton.onclick = function() {
-    readDiv.style.display = "none";
-    writeDiv.style.display = "";
+    if (!mod.editing) {
+      mod.editing = true;
+      readDiv.style.display = "none";
+      writeDiv.style.display = "";
+      mod.editing = true;
+      return;
+    }
+    if (mod.editing) {
+      mod.title = titleEdit.value;
+      mod.carMilage = carMilageEdit.value;
+      mod.carEstMilage = carEstMilageEdit.value;
+      mod.oilWeight = oilWeightEdit.options[oilWeightEdit.selectedIndex].text;
+      mod.oilType = oilTypeEdit.options[oilTypeEdit.selectedIndex].text;
+      mod.lastOilChange = lastOilChangeEdit.value;
+      secondaryText.innerHTML = "Est Milage: " + mod.carMilage;
+      if (mod.needsOilChange) {
+        secondaryText.innerHTML = secondaryText.innerHTML + "<br>Need Oil Change";
+      }
+      if (mod.title == "") {
+        mod.title = mod.carYear + " " + mod.carMake + " " + mod.carModel;
+      }
+      textDiv.innerHTML = mod.title;
+      textDiv.appendChild(secondTextDiv);
+
+      //Update read-only fields
+      titleLabel.innerHTML = mod.title;
+      carMilageLabel.innerHTML = mod.carMilage;
+      carEstMilageLabel.innerHTML = mod.carEstMilage;
+      oilTypeLabel.innerHTML = mod.oilType;
+      oilWeightLabel.innerHTML = mod.oilWeight;
+      updateLastOilChange(mod);
+
+      bake_cookie();
+
+      //Hide edit, show read only
+      readDiv.style.display = "";
+      writeDiv.style.display = "none";
+      if (!isNaN(Date.parse(mod.lastOilChange))) {
+        var oilDate = new Date(mod.lastOilChange);
+        oilDate.setMonth(oilDate.getMonth() + 6);
+        if (mod.needsOilChange) {
+          nextOilChange.style.color = "red";
+        } else {
+          nextOilChange.style.color = "white";
+        }
+        nextOilChange.innerHTML = oilDate.toLocaleDateString("en-US");
+      }
+      if (isNaN(Date.parse(mod.lastOilChange))) {
+        tempDiv.visibility = "hidden"
+      } else {
+        tempDiv.visibility = "visible"
+      }
+      mod.editing = false;
+      return;
+    }
   }
   //Title
-  readDiv.appendChild(mod.title);
-  readDiv.appendChild(closeButton);
+  var titleLabel = document.createElement("Label");
+  titleLabel.innerHTML = mod.title;
+  readDiv.appendChild(titleLabel);
+  mainDiv.appendChild(closeButton);
+  mainDiv.appendChild(deleteButton);
+  mainDiv.appendChild(editButton);
   var tempDiv = document.createElement("div");
-  tempDiv.appendChild(editButton);
+
   readDiv.appendChild(tempDiv);
   //Milage
   var tempDiv = document.createElement("div");
   var MSRPLabel = document.createElement("Label");
   MSRPLabel.innerHTML = "Milage: ";
   tempDiv.appendChild(MSRPLabel);
-  tempDiv.appendChild(mod.carMilage);
+  var carMilageLabel = document.createElement("Label");
+  carMilageLabel.innerHTML = mod.carMilage;
+  tempDiv.appendChild(carMilageLabel);
   readDiv.appendChild(tempDiv);
 
   //Est Milage
@@ -274,62 +483,98 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
   var MSRPLabel = document.createElement("Label");
   MSRPLabel.innerHTML = "Estimated Yearly Milage: ";
   tempDiv.appendChild(MSRPLabel);
-  tempDiv.appendChild(mod.carEstMilage);
+  var carEstMilageLabel = document.createElement("Label");
+  carEstMilageLabel.innerHTML = mod.carEstMilage;
+  tempDiv.appendChild(carEstMilageLabel);
   readDiv.appendChild(tempDiv);
 
   //Oil Type
   var tempDiv = document.createElement("div");
   var MSRPLabel = document.createElement("Label");
   MSRPLabel.innerHTML = "Oil Type: ";
+  var oilTypeLabel = document.createElement("Label");
+  oilTypeLabel.innerHTML = mod.oilType;
   tempDiv.appendChild(MSRPLabel);
-  tempDiv.appendChild(mod.oilType);
+  tempDiv.appendChild(oilTypeLabel);
   readDiv.appendChild(tempDiv);
 
   //Oil Weight
   var tempDiv = document.createElement("div");
   var MSRPLabel = document.createElement("Label");
+  var oilWeightLabel = document.createElement("Label");
+  oilWeightLabel.innerHTML = mod.oilWeight;
   MSRPLabel.innerHTML = "Oil Weight: ";
   tempDiv.appendChild(MSRPLabel);
-  tempDiv.appendChild(mod.oilWeight);
+  tempDiv.appendChild(oilWeightLabel);
+  readDiv.appendChild(tempDiv);
+
+  //Next Oil Change
+
+  var tempDiv = document.createElement("div");
+  var MSRPLabel = document.createElement("Label");
+  MSRPLabel.innerHTML = "Next Oil Change: ";
+  var oilDate = new Date(mod.lastOilChange);
+  var nextOilChange = document.createElement("Label");
+  oilDate.setMonth(oilDate.getMonth() + 6)
+  nextOilChange.innerHTML = oilDate.toLocaleDateString("en-US");
+  if (mod.needsOilChange) {
+    nextOilChange.style.color = "red";
+  } else {
+    nextOilChange.style.color = "white";
+  }
+  tempDiv.appendChild(MSRPLabel);
+  tempDiv.appendChild(nextOilChange);
+  if (isNaN(Date.parse(mod.lastOilChange))) {
+    tempDiv.style.visibility = "hidden"
+  } else {
+    tempDiv.style.visibility = "visible"
+  }
   readDiv.appendChild(tempDiv);
 
   //
   //Write section
   //
-  doneEditButton = document.createElement("button");
   //Title
   var titleEdit = document.createElement("input");
   titleEdit.className = "title";
-  titleEdit.value = mod.title.innerHTML;
+  titleEdit.value = mod.title;
   writeDiv.appendChild(titleEdit);
   var tempDiv = document.createElement("div");
-  tempDiv.appendChild(doneEditButton);
+  tempDiv.style.padding = "5px 0px";
   writeDiv.appendChild(tempDiv);
   //Milage
   var tempDiv = document.createElement("div");
+  tempDiv.style.padding = "5px 0px";
   var MSRPLabel = document.createElement("Label");
   MSRPLabel.innerHTML = "Milage: ";
+  MSRPLabel.className = "editText";
   var carMilageEdit = document.createElement("input");
-  carMilageEdit.value = mod.carMilage.innerHTML;
+  carMilageEdit.value = mod.carMilage;
+  carMilageEdit.className = "editBox";
   tempDiv.appendChild(MSRPLabel);
   tempDiv.appendChild(carMilageEdit);
   writeDiv.appendChild(tempDiv);
 
   //Est Milage
   var tempDiv = document.createElement("div");
+  tempDiv.style.padding = "5px 0px";
   var MSRPLabel = document.createElement("Label");
   MSRPLabel.innerHTML = "Estimated Yearly Milage: ";
+  MSRPLabel.className = "editText";
   var carEstMilageEdit = document.createElement("input");
-  carEstMilageEdit.value = mod.carEstMilage.innerHTML;
+  carEstMilageEdit.value = mod.carEstMilage;
+  carEstMilageEdit.className = "editBox";
   tempDiv.appendChild(MSRPLabel);
-  tempDiv.appendChild(carMilageEdit);
+  tempDiv.appendChild(carEstMilageEdit);
   writeDiv.appendChild(tempDiv);
 
   //Oil Type
   var tempDiv = document.createElement("div");
+  tempDiv.style.padding = "5px 0px";
   var MSRPLabel = document.createElement("Label");
   var oilTypeEdit = document.createElement("select");
-  oilTypeEdit.value = mod.oilType.innerHTML;
+  oilTypeEdit.value = mod.oilType;
+  oilTypeEdit.className = "editBox";
   MSRPLabel.innerHTML = "Oil Type: ";
   var oilTypes = "Conventional,Blend,Synthetic";
   var array = oilTypes.split(',');
@@ -344,6 +589,7 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
 
   //Oil Weight
   var tempDiv = document.createElement("div");
+  tempDiv.style.padding = "5px 0px";
   var MSRPLabel = document.createElement("Label");
   var oilWeightEdit = document.createElement("select");
   var oilWeights = "0W-20,5W-20,10W-20,0W-30,5W-30,10W-30,0W-40,5W-40,10W-40,0W-50,5W-50,10W-50";
@@ -353,27 +599,34 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
     option.text = item;
     oilWeightEdit.add(option);
   })
-  oilWeightEdit.value = mod.oilWeight.innerHTML;
+  oilWeightEdit.value = mod.oilWeight;
+  oilWeightEdit.className = "editBox";
   MSRPLabel.innerHTML = "Oil Weight: ";
   tempDiv.appendChild(MSRPLabel);
   tempDiv.appendChild(oilWeightEdit);
   writeDiv.appendChild(tempDiv);
-  doneEditButton.innerHTML = "Done Editing";
-  doneEditButton.onclick = function() {
-    mod.title.innerHTML = titleEdit.value;
-    mod.carMilage.innerHTML = carMilageEdit.value;
-    mod.carEstMilage.innerHTML = carEstMilageEdit.value;
-    mod.oilWeight.innerHTML = oilWeightEdit.options[oilWeightEdit.selectedIndex].text;
-    mod.oilType.innerHTML = oilTypeEdit.options[oilTypeEdit.selectedIndex].text;
-    secondaryText.innerHTML = "Est Milage: " + mod.carMilage.innerHTML;
-    if (mod.title.innerHTML == "") {
-      mod.title.innerHTML = mod.carYear.innerHTML + " " + mod.carMake.innerHTML + " " + mod.carModel.innerHTML;
-    }
-    textDiv.innerHTML = mod.title.innerHTML;
-    textDiv.appendChild(secondTextDiv);
-    readDiv.style.display = "";
-    writeDiv.style.display = "none";
-  }
+
+  //Next Oil Change
+  var tempDiv = document.createElement("div");
+  tempDiv.style.padding = "5px 0px";
+  var MSRPLabel = document.createElement("Label");
+  MSRPLabel.innerHTML = "Last Oil Change: ";
+  MSRPLabel.className = "editText";
+  var lastOilChangeEdit = document.createElement("input");
+  lastOilChangeEdit.type = "text";
+  lastOilChangeEdit.className = "editBox";
+  lastOilChangeEdit.value = mod.lastOilChange;
+  lastOilChangeEdit.id = "carDate";
+  $(function() {
+    $(lastOilChangeEdit).datepicker();
+  });
+  tempDiv.appendChild(MSRPLabel);
+  tempDiv.appendChild(lastOilChangeEdit);
+  writeDiv.appendChild(tempDiv);
+
+
+  writeDiv.appendChild(tempDiv);
+
 
 
 
@@ -393,6 +646,8 @@ function expandCarModule(mod, button, textDiv, secondTextDiv, secondaryText) {
 
 function showAddCar() {
   //Make sure the placeholder is hidden when adding a module for the first time
+  document.getElementById("addCarBtn").className = "dropbtnFadeOut";
+  document.getElementById('addCarBtn').style.visibility = 'hidden';
   document.getElementById('AddCar').className = 'FormFadeIn';
   document.getElementById('Modules').style.display = 'none';
   document.getElementById('Title').style.display = 'none';
@@ -413,6 +668,9 @@ function validateForm() {
   var milage = parseFloat(document.forms["tableForm"]["milage"].value);
   var estMilage = parseFloat(document.forms["tableForm"]["estMilage"].value);
 
+  var oilWeight = "5W-20";
+  var oilType = "Synthetic";
+  var lastOilChange = document.forms["tableForm"]["lastOilChange"].value;
 
   //Check to make sure no numbers are less than 0
   if (milage < 0) {
@@ -426,7 +684,7 @@ function validateForm() {
 
 
   //Create new module
-  addCar(year, make, model, trim, year + " " + make + " " + model, milage, estMilage, "5W-20", "Synthetic");
+  addCar(year, make, model, trim, year + " " + make + " " + model, milage, estMilage, oilWeight, oilType, lastOilChange);
 
   cancelAddCar();
   //This is so the page doesn't refresh on submit
@@ -435,6 +693,8 @@ function validateForm() {
 
 //Cancels the add page and goes back to the homepage
 function cancelAddCar() {
+  document.getElementById("addCarBtn").className = "dropbtnFadeIn";
+  document.getElementById('addCarBtn').style.visibility = 'visible';
   document.getElementById('AddCar').className = 'FormFadeOut';
   setTimeout(function() {
     document.getElementById('Modules').style.display = '';

@@ -31,15 +31,35 @@ Its a textbox but it looks like a label until you click it*/
 Also sets its position*/
 
 .closeButton {
-  filter: drop-shadow(1px 1px 1px black);
-  float: right;
-  border-radius: 35px;
-  width: 50px;
-  height: 20px;
-  color: white;
-  background-color: red;
+  filter: drop-shadow(2px 2px 2px gray);
+  float: left;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
   position: relative;
   right: 5px;
+  transition: all 0.3s ease 0s;
+  opacity: 0.5;
+  background-color: white;
+}
+
+.closeButton:hover, .closeButton:focus {
+  opacity: 1;
+}
+
+.deleteButton {
+  filter: drop-shadow(2px 2px 2px gray);
+  padding: 10px;
+  float: right;
+  width: 60px;
+  height: 60px;
+  position: relative;
+  transition: all 0.3s ease 0s;
+  opacity: 0.5;
+}
+
+.deleteButton:hover, .deleteButton:focus {
+  opacity: 1;
 }
 
 /* Changes the color of the add module button to green*/
@@ -55,6 +75,37 @@ Also sets its position*/
   bottom: 15px;
   right: 15px;
   border-radius: 12%;
+  transition: all 0.3s ease 0s;
+}
+
+.dropbtnFadeIn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 12%;
+  transition: all 0.3s ease 0s;
+  animation: fadein 0.5s;
+}
+
+.dropbtnFadeOut {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 12%;
+  transition: all 0.3s ease 0s;
+  animation: fadeout 0.3s;
 }
 
 .carbtn {
@@ -66,15 +117,16 @@ Also sets its position*/
   color: white;
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 16px;
-  font-size: 36px;
+  font-size: 40px;
   border: none;
   cursor: pointer;
   border-radius: 12%;
   height: 200px;
   width: 400px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   transition: all 0.3s ease 0s;
   text-align: center;
+  font-family: "Verdana", Times, sans-serif;
 }
 
 .carbtnEXPAND {
@@ -85,13 +137,14 @@ Also sets its position*/
   background-blend-mode: overlay;
   color: white;
   padding: 16px;
-  font-size: 36px;
+  font-size: 40px;
   border: none;
   cursor: pointer;
   border-radius: 0%;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   transition: all 0.5s ease 0s;
   text-align: center;
+  font-family: "Verdana", Times, sans-serif;
 }
 
 /* Dropdown button on hover & focus */
@@ -253,18 +306,6 @@ creates a border*/
   width: 40%;
 }
 
-/*for the discounts section, sets padding, total width out of entire module */
-
-.discounts {
-  padding-top: 10px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  float: left;
-  width: 20%;
-  height: 245px;
-  border-left: 5px solid black;
-}
-
 /*for the total section, sets padding, total width out of entire module */
 
 .total {
@@ -293,15 +334,32 @@ creates a border*/
 /*for the title section, sets padding, total width out of entire module */
 
 .title {
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-  column-span: all;
-  padding-bottom: 5px;
-  font-size: 36px;
+  font-size: 40px;
   color: white;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   text-align: center;
   background: transparent;
   border: none;
+  font-family: "Verdana", Times, sans-serif;
+}
+
+.editBox {
+  position: absolute;
+  font-size: 40px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  background: transparent;
+  border: none;
+  font-family: "Verdana", Times, sans-serif;
+}
+
+.editText {
+  font-size: 40px;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  background: transparent;
+  border: none;
+  font-family: "Verdana", Times, sans-serif;
 }
 
 /*formats all textboxes */
